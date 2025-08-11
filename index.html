@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDUVERSE TESTING </title>
+  <link href="https://vjs.zencdn.net/7.21.1/video-js.css" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: black;
+    }
+    .video-js {
+      width: 100%;
+      height: 100%;
+    }
+    #tokenForm {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      background: black;
+      color: white;
+      flex-direction: column;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      background: #ff3d00;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="tokenForm">
+    <h2>Enter Access Token</h2>
+    <input type="text" id="tokenInput" placeholder="Enter your token here">
+    <button onclick="checkToken()">Submit</button>
+  </div>
+
+  <video
+    id="my-video"
+    class="video-js vjs-default-skin"
+    controls
+    preload="auto"
+    autoplay
+    playsinline
+    style="display:none;"
+  ></video>
+
+  <script src="https://vjs.zencdn.net/7.21.1/video.min.js"></script>
+
+  <script>
+    const validTokens = [
+      "687DB8BD/CQ6N0T",
+      "215FC750/T3IER7",
+      "C1F176B6/0C7NXF",
+      "54171A00/EW6L5M"
+    ];
+
+    function checkToken() {
+      const userToken = document.getElementById("tokenInput").value.trim();
+      if (validTokens.includes(userToken)) {
+        document.getElementById("tokenForm").style.display = "none";
+        document.getElementById("my-video").style.display = "block";
+        
+        const videoUrl = `https://dga9kme080o0w.cloudfront.net/out/v1/5c7cfedca3df4fc99ea383b5f2e6a7a8/index.m3u8?token=${encodeURIComponent(userToken)}`;
+        
+        videojs('my-video', {
+          fluid: true,
+          liveui: true,
+          autoplay: true,
+          preload: 'auto',
+          sources: [{
+            src: videoUrl,
+            type: 'application/x-mpegURL'
+          }]
+        });
+      } else {
+        alert("Invalid token. Please try again.");
+      }
+    }
+  </script>
+
+</body>
+</html>
